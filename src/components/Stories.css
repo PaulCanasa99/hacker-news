@@ -1,0 +1,27 @@
+.stories-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stories-container > div {
+  flex: 40%;
+}
+
+.container {
+  padding: 2.5% 10% 0 10%;
+}
+
+.dropdown-menu {
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 10px;
+  padding: 0;
+}
+
+.dropdown-menu > option {
+  background-color: red;
+  padding: 4rem;
+}
