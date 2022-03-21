@@ -1,11 +1,15 @@
 import './App.css';
-import Dropdown from './components/Dropdown';
 import Stories from './components/Stories';
-
+import HackerNewsLogo from './assets/hacker-news@2x.png';
 const App = () => {
 
   return (
-    <Stories/>
+    <>
+      <div className='header'>
+        <img src={HackerNewsLogo} alt='Hacker News Logo'/>
+      </div>
+      <Stories/>
+    </>
   );
 }
 

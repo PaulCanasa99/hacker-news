@@ -27,6 +27,17 @@
   background-color: rgba(96, 96, 96, .06);
 }
 
+@media (max-width: 80em) {
+  .story-info {
+    flex: 80%;
+    padding: 1rem;
+  }
+  
+  .story-fav {
+    flex: 20%;
+  }
+}
+
 .story-fav > img {
   height: 1.5rem;
 }

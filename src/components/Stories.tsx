@@ -3,17 +3,24 @@ import Story from './Story';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useFetch from '../hooks/useFetch';
 import Dropdown from './Dropdown';
+import angularLogo from '../assets/angular@2x.png';
+import reactLogo from '../assets/react@2x.png';
+import vueLogo from '../assets/vue@2x.png';
+import StoryProps from '../entities/StoryProps';
+
+const dropdownOptions = [
+  { id: 1, name: 'Angular', icon: angularLogo, value: 'angular' },
+  { id: 2, name: 'React', icon: reactLogo, value: 'reactjs' },
+  { id: 3, name: 'Vuejs', icon: vueLogo, value: 'vuejs' },
+]
 
 const Stories = () => {
 
-  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [query, setQuery] = useState(localStorage.getItem("query") || "");
   const [page, setPage] = useState(1);
   const { loading, error, list } = useFetch(query, page);
   const loader = useRef(null);
-
-  const handleChange = (e: any) => {
-    setQuery(e.target.value);
-  };
 
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
@@ -21,6 +28,38 @@ const Stories = () => {
       setPage((prev) => prev + 1);
     }
   }, []);
+
+  const updateFilter = (value: string) => {
+    setFilter(value);
+    localStorage.setItem("filter", value);
+  }
+
+  const updateQuery = (value: string, name: string) => {
+    setPage(1);
+    setQuery(value);
+    localStorage.setItem("query", value);
+    localStorage.setItem("optionSelected", name);
+  }
+
+  const renderStories = () => {
+    if (filter === 'all')
+      return (list.map((story, index) => (
+        <Story story={story} key={index}/>
+      )));
+    else {
+      const favStories = JSON.parse(localStorage.getItem('favoriteStories') || '[]');
+      return (favStories.map((story: StoryProps, index: number) => (
+        <Story story={story} key={index}/>
+      )));
+    }
+  }
+
+  useEffect(() => {
+    const filter = localStorage.getItem("filter");
+    if (filter) {
+      setFilter(filter);
+    }
+  }, [])
 
   useEffect(() => {
     const option = {
@@ -34,11 +73,13 @@ const Stories = () => {
 
   return (
     <div className='container'>
-      <Dropdown/>
+      <div className='stories-tabs-container'>
+        <span onClick={() => updateFilter('all')} className={filter === 'all' ? 'tab active' : 'tab'}>All</span>
+        <span onClick={() => updateFilter('myFaves')} className={filter === 'myFaves' ? 'tab active' : 'tab'}>My faves</span>
+      </div>
+      {filter === 'all' && <Dropdown optionsList={dropdownOptions} updateQuery={updateQuery}/>}
       <div className="stories-container">
-        {list.map((story, index) => (
-          <Story story={story} key={index}/>
-        ))}
+        {renderStories()}
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error!</p>}

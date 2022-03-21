@@ -1,3 +1,8 @@
-.container {
-  padding: 2.5% 10% 0 10%;
+.header {
+  padding: 2rem 4rem;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.header > img {
+  width: 10rem;
 }
