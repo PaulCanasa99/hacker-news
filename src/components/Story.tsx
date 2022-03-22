@@ -4,21 +4,23 @@ import FavoriteOutlinedLogo from '../assets/favorite-outlined.svg';
 import ClockLogo from '../assets/clock.svg';
 import StoryProps from '../entities/StoryProps';
 import { formatDistance } from 'date-fns'
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const Story = ({story} : {story: StoryProps}) => {
 
   const [favorite, setFavorite] = useState(false);
   const timeAgo = formatDistance(new Date(story.created_at), new Date());
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setFavorite(false);
     const favoriteStoriesItem = localStorage.getItem('favoriteStories');
     if (favoriteStoriesItem) {
       let favoriteStories = JSON.parse(favoriteStoriesItem);
-      if (favoriteStories.find((favStory: StoryProps) => story.story_id === favStory.story_id))
+      if (favoriteStories.find((favStory: StoryProps) => story.story_id === favStory.story_id)){
         setFavorite(true);
+      }
     }
-  }, [localStorage.getItem('favoriteStories')])
+  }, [])
 
   const openStory = () => {
     window.open(story.story_url, '_blank');
@@ -28,7 +30,6 @@ const Story = ({story} : {story: StoryProps}) => {
     const favoriteStoriesItem = localStorage.getItem('favoriteStories');
     if (favoriteStoriesItem) {
       let favoriteStories = JSON.parse(favoriteStoriesItem);
-      console.log(favoriteStories);
       if (favoriteStories?.find((favStory: StoryProps) => story.story_id === favStory.story_id)) {
         favoriteStories = favoriteStories.filter((favStory: StoryProps) => favStory.story_id !== story.story_id);
         localStorage.setItem('favoriteStories', JSON.stringify(favoriteStories));
@@ -54,6 +55,7 @@ const Story = ({story} : {story: StoryProps}) => {
           <p>{`${timeAgo} ago by ${story.author}`}</p>
         </div>
         <p className='story-title'>{story.story_title}</p>
+        <p className='story-title'>{story.story_id}</p>
       </div>
       <div className='story-fav' onClick={onFavorite}>
         <img 

@@ -24,10 +24,11 @@ const Stories = () => {
 
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
-    if (target.isIntersecting) {
-      setPage((prev) => prev + 1);
+    if (target.isIntersecting && filter === "all") {
+      if (list.length !== 0)
+        setPage((prev) => prev + 1);
     }
-  }, []);
+  }, [list]);
 
   const updateFilter = (value: string) => {
     setFilter(value);
@@ -43,13 +44,13 @@ const Stories = () => {
 
   const renderStories = () => {
     if (filter === 'all')
-      return (list.map((story, index) => (
-        <Story story={story} key={index}/>
+      return (list.map((story) => (
+        <Story story={story} key={story.story_id}/>
       )));
     else {
       const favStories = JSON.parse(localStorage.getItem('favoriteStories') || '[]');
-      return (favStories.map((story: StoryProps, index: number) => (
-        <Story story={story} key={index}/>
+      return (favStories.map((story: StoryProps) => (
+        <Story story={story} key={story.story_id}/>
       )));
     }
   }
@@ -83,7 +84,7 @@ const Stories = () => {
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>Error!</p>}
-      <div ref={loader} />
+      {<div ref={loader} />}
     </div>
   );
 }
