@@ -24,7 +24,7 @@ const useFetch = (query: string, page: number) => {
         return validStories.findIndex((s: StoryProps) => s.story_id === story.story_id) === index;
       });
      
-      if (query === lastQuery || !lastQuery ) {
+      if ((query === lastQuery || !lastQuery) && lastQuery != '') {
         setList((prevState) => {
           const newList = [...prevState, ...uniqueStories];
           const uniqueNewStories = newList.filter((story: StoryProps, index: number) => {

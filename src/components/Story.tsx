@@ -55,7 +55,6 @@ const Story = ({story} : {story: StoryProps}) => {
           <p>{`${timeAgo} ago by ${story.author}`}</p>
         </div>
         <p className='story-title'>{story.story_title}</p>
-        <p className='story-title'>{story.story_id}</p>
       </div>
       <div className='story-fav' onClick={onFavorite}>
         <img 
